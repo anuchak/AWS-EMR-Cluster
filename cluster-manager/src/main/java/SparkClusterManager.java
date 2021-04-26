@@ -15,8 +15,8 @@ public class SparkClusterManager
 {
     private static final SparkClusterManager SPARK_CLUSTER_MANAGER = new SparkClusterManager();
     private final AWSCredentialsProvider credentialsProvider;
-    private List<String> runJobFlowResultList = new ArrayList<>();
-    private List<String> stepIdsList = new ArrayList<>();
+    private final List<String> runJobFlowResultList = new ArrayList<>();
+    private final List<String> stepIdsList = new ArrayList<>();
     private AmazonElasticMapReduce EMR_CLIENT;
 
     public SparkClusterManager()
@@ -85,7 +85,7 @@ public class SparkClusterManager
         System.out.println("Result of create AWS EMR cluster is " + result + "\n");
     }
 
-    public void runJob()
+    public void runJob(String jarLocation)
     {
         String clusterId = runJobFlowResultList.get(0);
         System.out.println("Submitting job to AWS EMR cluster: " + clusterId);
@@ -97,7 +97,7 @@ public class SparkClusterManager
 
         HadoopJarStepConfig sparkStepConf = new HadoopJarStepConfig()
                 .withJar("command-runner.jar")
-                .withArgs("spark-submit","--executor-memory","1g","--class","org.apache.spark.examples.SparkPi","/usr/lib/spark/examples/jars/spark-examples.jar","10");
+                .withArgs("spark-submit","--executor-memory","1g","--class","org.example.App",jarLocation,"10");
 
         StepConfig sparkStep = new StepConfig()
                 .withName("Spark Step")

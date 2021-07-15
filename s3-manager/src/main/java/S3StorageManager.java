@@ -57,7 +57,7 @@ public class S3StorageManager
         }
 
         // this is for residual bytes at the end
-        CompletedPart part = completeMultiPartUpload(bucket, fileName, uploadID, partNo, byteArrayOfFile, i, residualBytes+1, totalByteLength);
+        CompletedPart part = completeMultiPartUpload(bucket, fileName, uploadID, partNo, byteArrayOfFile, i, residualBytes, totalByteLength);
         completedParts.add(part);
 
         CompletedMultipartUpload completedMultipartUpload = CompletedMultipartUpload.builder()
@@ -69,7 +69,7 @@ public class S3StorageManager
 
         CompleteMultipartUploadResponse completeMultipartUploadResponse = S3_CLIENT.completeMultipartUpload(completeMultipartUploadRequest);
 
-        System.out.println("Total time taken for upload of ~ 111 MB is: " + (System.currentTimeMillis() - startTime));
+        System.out.println("Total time taken for upload of file is: " + (System.currentTimeMillis() - startTime) + " milliseconds. ");
 
         String finalLocationUrl = completeMultipartUploadResponse.location();
 
